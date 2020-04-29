@@ -13,6 +13,12 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { NoimagePipe } from '../pipes/noimage.pipe';
 import { CatalogCardComponent } from './catalog-card/catalog-card.component';
+import { NavMenuComponent } from '../nav-menu/nav-menu.component';
+import { JwtModule } from "@auth0/angular-jwt";
+
+export function tokenGetter() {
+  return localStorage.getItem("token");
+}
 
 @NgModule({
   declarations: [
@@ -22,7 +28,8 @@ import { CatalogCardComponent } from './catalog-card/catalog-card.component';
     UserEditComponent,
     CatalogComponent,
     NoimagePipe,
-    CatalogCardComponent
+    CatalogCardComponent,
+    NavMenuComponent
   ],
   exports: [
     UserCreateComponent
@@ -32,7 +39,12 @@ import { CatalogCardComponent } from './catalog-card/catalog-card.component';
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter
+      }
+    })
   ],
   providers: [],
   bootstrap: []

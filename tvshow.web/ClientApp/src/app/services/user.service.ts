@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 
 import { IUser } from '../models/user.interface';
 
@@ -18,23 +18,58 @@ export class UserService {
     this.pathservice = this.baseUrl + "api/" + this.controlller;
   }
 
-  createUser(user: IUser){
-    return this._http.post(this.pathservice, user);
+  createUser(user: IUser) {
+
+    let token = this.getTokenSaved();
+
+    return this._http.post(this.pathservice, user, {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
+    });
   }
 
-  getAllUser() {    
-    return this._http.get(this.pathservice);
+  getTokenSaved() {
+    if (localStorage.getItem('token')) {
+      return localStorage.getItem('token');
+    } else {
+      return '';
+    }
   }
 
-  getUserById(id){
-    return this._http.get(this.pathservice + '/' + id);
+  getAllUser() {
+    
+    let token = this.getTokenSaved();       
+
+    return this._http.get(this.pathservice, {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
+    });
+  }
+
+  getUserById(id) {
+
+    let token = this.getTokenSaved();
+
+    return this._http.get(this.pathservice + '/' + id, {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
+    });
+
   }
 
   updateUser(id, user: IUser) {
-    return this._http.put(this.pathservice + '/' + id, user);
+
+    let token = this.getTokenSaved();
+
+    return this._http.put(this.pathservice + '/' + id, user , {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
+    });
   }
 
   deleteUser(id) {
-    return this._http.delete(this.pathservice + '/' + id);
+
+    let token = this.getTokenSaved();
+
+    return this._http.delete(this.pathservice + '/' + id, {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
+    });
+
   }
 }

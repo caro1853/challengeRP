@@ -15,7 +15,6 @@ import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
@@ -26,11 +25,11 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      //{ path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'login', component: LoginComponent },
-      { path: '', redirectTo: '/login', pathMatch: 'full' }
+      { path: 'login', component: LoginComponent }//,
+      //{ path: '', redirectTo: '/login', pathMatch: 'full' }
     ]),
     PageModule,
     ReactiveFormsModule

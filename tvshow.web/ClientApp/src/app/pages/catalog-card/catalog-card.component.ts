@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CatalogService } from '../../services/catalog.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class CatalogCardComponent implements OnInit {
 
   catalog: any = {};
 
-  constructor(private _activatedRoute: ActivatedRoute, private _catalogService: CatalogService) { }
+  constructor(private _activatedRoute: ActivatedRoute, private _catalogService: CatalogService, private router: Router) { }
 
   ngOnInit() {
     this.getCatalog();
@@ -31,6 +31,10 @@ export class CatalogCardComponent implements OnInit {
 
       }
     });
+  }
+
+  return() {
+    this.router.navigate(['/catalog']);
   }
 
 }

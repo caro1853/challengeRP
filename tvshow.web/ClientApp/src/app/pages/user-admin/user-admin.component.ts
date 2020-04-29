@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { IUser } from '../../models/user.interface';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -19,6 +20,13 @@ export class UserAdminComponent implements OnInit {
     this._userService.getAllUser().subscribe((data:IUser[]) => {
       console.log({data});
       this.users = data;
+    }, (err) => {
+        if (err['status'] === 401) {
+          this.router.navigate(['/login']);
+        }
+        else {
+          this.showAlert(err);
+        }      
     });
   }
 
@@ -31,12 +39,37 @@ export class UserAdminComponent implements OnInit {
   }
 
   deleteUser(id, index) {
-    this._userService.deleteUser(id).subscribe(res => {
-      console.log({ res });
 
-      if (res === true) {
-        this.users.splice(index, 1);
+
+    Swal.fire({
+      title: 'Está seguro?',
+      text: "Se borrará el registro!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Borrar!'
+    }).then((result) => {
+      if (result.value) {
+
+        this._userService.deleteUser(id).subscribe(res => {
+          console.log({ res });
+
+          if (res === true) {
+            this.users.splice(index, 1);
+          }
+        });        
       }
+    });    
+  }
+
+  showAlert(err) {
+
+    Swal.fire({
+      title: 'Error!',
+      text: err.statusText,
+      icon: 'error',
+      timer: 2000
     });
   }
 }

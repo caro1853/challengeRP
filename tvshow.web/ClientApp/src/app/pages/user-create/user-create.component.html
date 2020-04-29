@@ -1,56 +1,71 @@
-<form
-    [formGroup] ="form"
-    (ngSubmit)="saveUser()"
-      >
+<h5>Creación de usuarios</h5>
+<hr />
 
-  <div class="form-group">
+<form [formGroup]="form"
+      (ngSubmit)="saveUser()">
+
+  <div class="form-group mt-5">
     <label for="exampleFormControlInput1">Nombre</label>
-    <input
-           type="text"
+    <input type="text"
            class="form-control"
+           [class.is-invalid]="controlValid('name')"
            placeholder="Nombre"
-           formControlName="name"
-           >
+           formControlName="name">
+    <div class="invalid-feedback">El nombre es obligatorio.</div>
   </div>
 
   <div class="form-group">
     <label for="exampleFormControlInput1">Apellidos</label>
     <input type="text"
            class="form-control"
+           [class.is-invalid]="controlValid('lastname')"
            placeholder="Apellidos"
            formControlName="lastname">
+    <div class="invalid-feedback">El apellido es obligatorio.</div>
   </div>
 
   <div class="form-group">
     <label for="exampleFormControlInput1">Correo electrónico</label>
     <input type="email"
            class="form-control"
+           [class.is-invalid]="controlValid('email')"
            placeholder="Correo electronico"
            formControlName="email">
+    <div class="invalid-feedback">El correo es inválido.</div>
   </div>
 
   <div class="form-group">
     <label for="exampleFormControlInput1">Contraseña</label>
-    <input type="text"
+    <input type="password"
            class="form-control"
+           [class.is-invalid]="controlValid('pass1')"
            placeholder=""
            formControlName="pass1">
+    <div class="invalid-feedback">La contraseña es obligatoria.</div>
   </div>
 
   <div class="form-group">
     <label for="exampleFormControlInput1">Repita la contraseña</label>
-    <input type="text"
+    <input type="password"
            class="form-control"
+           [class.is-invalid]="controlValid('pass2')"
            placeholder=""
            formControlName="pass2">
+    <div class="invalid-feedback">Las contraseñas no son iguales.</div>
+  </div>  
+
+  <div class="form-group mt-5"      >
+    <p class="text-right">
+
+      <button type="submit" class="btn btn-primary">
+        <i class="far fa-save"></i> Crear
+      </button>
+
+      <button type="submit" class="btn btn-danger" (click)="return()">
+        <i class="fas fa-undo-alt"></i> Cancelar
+      </button>
+
+    </p>
   </div>
 
-  <div class="form-group">
-
-    <button type="submit" class="btn btn-outline-primary btn-block">
-      Guardar
-    </button>
-
-  </div>
-  
 </form>

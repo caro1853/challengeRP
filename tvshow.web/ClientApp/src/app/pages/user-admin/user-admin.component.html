@@ -1,31 +1,38 @@
-<button type="button" class="btn btn-outline-primary" (click)="newUser()">
-    <i class="fas fa-plus"></i>
-</button>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Correo electrónico</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users; let i=index">
-            <th scope="row">{{ i + 1 }} </th>
-            <td>{{ user.name }}</td>
-            <td>{{ user.lastname }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                <button type="button" class="btn btn-outline-primary" (click)="editUser(user.id)">
-                    <i class="fas fa-user-edit"></i>
-                </button>
+<h5>Administración de usuarios</h5>
+<hr />
 
-                <button type="button" class="btn btn-outline-danger"  (click)="deleteUser(user.id, i)"> 
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
+<p class="text-right">
+  <button type="button" class="btn btn-primary" (click)="newUser()">
+    <i class="fas fa-plus"></i> Nuevo registro
+  </button>
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellido</th>
+      <th scope="col">Correo electrónico</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; let i=index">
+      <th scope="row">{{ i + 1 }} </th>
+      <td>{{ user.name }}</td>
+      <td>{{ user.lastname }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <button type="button" class="btn btn-outline-primary" (click)="editUser(user.id)">
+          <i class="fas fa-user-edit"></i>
+        </button>
+
+        <button type="button" class="btn btn-outline-danger" (click)="deleteUser(user.id, i)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
 </table>
+
+<hr />

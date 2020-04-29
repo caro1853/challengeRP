@@ -5,16 +5,23 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NoimagePipe implements PipeTransform {
 
-  transform(image: any, ...args: unknown[]): unknown {
+  transform(image: any, origen: string): unknown {
+
+    let imgReturn = 'medium';
+
+    if (origen === 'card') {
+      imgReturn = 'original';
+    }
+
     if (!image) {
       return 'assets/img/noimage.png';
     }
 
-    if (!image.medium) {
+    if (!image[imgReturn]) {
       return 'assets/img/noimage.png';
     }
 
-    return image.medium;    
+    return image[imgReturn];    
   }
 
 }

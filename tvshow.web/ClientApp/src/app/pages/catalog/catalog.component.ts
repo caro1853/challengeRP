@@ -3,6 +3,7 @@ import { CatalogService } from '../../services/catalog.service';
 import { SearchModel } from '../../models/search.models';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-catalog',
@@ -17,7 +18,12 @@ export class CatalogComponent implements OnInit {
 
   searchword: string = '';
 
-  constructor(private _catalogService: CatalogService, private _router: Router) { }
+  constructor(private _catalogService: CatalogService, private _router: Router, private _loginService: LoginService) {
+
+    if (this._loginService.isAuthenticated() !== true) {
+      this._router.navigate(['/login']);
+    }    
+  }
 
   ngOnInit() {
     this.getCatalogFull();
@@ -26,7 +32,9 @@ export class CatalogComponent implements OnInit {
   getCatalogFull() {
     this._catalogService.getCatalogFull().subscribe((data: any[]) => {
       this.catalogs = data;
-      console.log(this.catalogs);
+      console.log('data', this.catalogs);
+    }, (err) => {
+        console.log('este es el error:', err);
     });
   }
 

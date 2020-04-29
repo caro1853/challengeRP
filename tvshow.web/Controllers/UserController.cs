@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using tvshow.web.Core.Entities;
 using tvshow.web.Core.Interfaces;
+using tvshow.web.Infrastructure.Utils;
 
 namespace tvshow.web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController]    
     public class UserController : ControllerBase
-    {
-
+    {        
         private readonly IUserRepository _userRepository;
 
         public UserController(IUserRepository userRepository)
@@ -24,22 +29,7 @@ namespace tvshow.web.Controllers
         [HttpGet]
         public  IEnumerable<User> Get()
         {
-            return this._userRepository.GetUsers();
-
-            /*
-            List<User> users = new List<User>();
-
-            users.Add(new User()
-            {
-                Id = 1,
-                Name = "Maria",
-                Lastname = "Morales",
-                Email = "maria@gmail.com",
-                Password = "1234",
-                Rol = "A"
-            });
-
-            return users;*/
+            return this._userRepository.GetUsers();            
         }
 
         [HttpGet("{id}")]
@@ -47,15 +37,7 @@ namespace tvshow.web.Controllers
         {
 
             return this._userRepository.GetUserById(id);
-            /*return new User()
-            {
-                Id = 20,
-                Name = "Mariana",
-                Lastname = "perez",
-                Email = "maria@gmail.com",
-                Password = "1234",
-                Rol = "A"
-            };*/
+            
         }
 
         [HttpDelete("{id}")]
@@ -72,11 +54,28 @@ namespace tvshow.web.Controllers
 
 
         [HttpPost]
-        public bool Create([FromBody] User user)
+        public IActionResult Create([FromBody] User user)
         {
-            return this._userRepository.CreateUser(user);
+            //Validate email unique
+            int cant = this._userRepository.GetUsers().Where(p => p.Email == user.Email).Count();
+
+            if (cant > 0)
+            {
+                return BadRequest(new 
+                    { 
+                        ok =  false,
+                        message = "El email debe ser único" 
+                    });
+            }
+
+            user.Password = ManageKeys.GetSHA256(user.Password);
+            bool res = this._userRepository.CreateUser(user);
+
+            return Ok(new
+                {
+                    ok = true,
+                    message = "Usuario creado"
+                });            
         }
-
-
     }
 }

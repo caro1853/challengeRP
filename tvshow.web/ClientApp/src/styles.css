@@ -14,3 +14,15 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.container-table {
+  width: 100vw;
+  height: 150px;  
+}
+
+.vertical-center-row {
+  margin: auto;
+  width: 40%;
+  padding: 20px;
+  text-align: center;
+}

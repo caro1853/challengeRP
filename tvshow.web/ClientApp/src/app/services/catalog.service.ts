@@ -11,12 +11,7 @@ export class CatalogService {
   constructor(private _http: HttpClient) { }
 
   getCatalogFull() {
-    return this._http.get('http://api.tvmaze.com/search/shows?q=a')
-      .pipe(
-        map((data: any[]) => {
-          return data;
-        })
-      );
+    return this._http.get('http://api.tvmaze.com/search/shows?q=a');
   }
 
   getSearch(infoSearch: SearchModel) {    

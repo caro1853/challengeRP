@@ -15,7 +15,7 @@ const pagesRoutes: Routes = [
       { path: 'useredit/:id', component: UserEditComponent, data: { titulo: 'Editar usuario' } },
       { path: 'catalog', component: CatalogComponent, data: { titulo: 'Catálogo' } },
       { path: 'catalog/:id', component: CatalogCardComponent, data: { titulo: 'Catálogo' } },
-      { path: '', redirectTo: '/useradmin', pathMatch: 'full' }
+      { path: '', redirectTo: '/catalog', pathMatch: 'full' }
     ]
   }
 ];

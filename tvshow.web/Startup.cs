@@ -8,11 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using tvshow.web.Infrastructure.Data;
 using tvshow.web.Core.Interfaces;
 using tvshow.web.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace tvshow.web
 {
     public class Startup
     {
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,8 +37,30 @@ namespace tvshow.web
 
             services.AddTransient<IUserRepository, UserRepository>();
 
-            //var connection = @"LAPTOP-V1LESJ15\SQLEXPRESS";
-            var connection = @"Server=localhost;Database=tvshow;Trusted_Connection=True";
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EstaEsUnaClaveSecreta")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            
+
+
+        //var connection = @"LAPTOP-V1LESJ15\SQLEXPRESS";
+        var connection = @"Server=localhost;Database=tvshow;Trusted_Connection=True";
             services.AddDbContext<MyDBContext>(options => options.UseSqlServer(connection));
         }
 
@@ -53,9 +80,33 @@ namespace tvshow.web
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
-            }
+            }              
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            /*
+            app.MapWhen(
+                context => (context.Request.Path
+                    .StartsWithSegments(new PathString("/api"))
+                ),
+                a =>
+                {
+                    a.UseRouting();
+                    a.UseAuthentication();                    
+                    a.UseEndpoints(endpoints =>
+                    {
+                        endpoints
+                            .MapControllers()
+                            .RequireAuthorization();
+                    });
+                }
+            );*/
+
+            /*app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });*/
 
             app.UseEndpoints(endpoints =>
             {
@@ -63,6 +114,19 @@ namespace tvshow.web
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            /*
+            app.MapWhen(context =>
+                context.Request.Path.StartsWithSegments(
+                   new PathString("/SecureLog")),
+                a => {
+                    a.UseRouting();
+                    a.UseEndpoints(endpoints => {
+                        endpoints.MapControllers()
+                            .RequireAuthorization("MustBeReader");
+                    });
+                }
+            );*/
 
             app.UseSpa(spa =>
             {
@@ -76,6 +140,8 @@ namespace tvshow.web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+           
         }
     }
 }

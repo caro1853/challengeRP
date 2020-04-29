@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IUser } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-user-edit',
@@ -70,7 +72,7 @@ export class UserEditComponent implements OnInit {
   saveUser() {
     if (this.form.invalid) {
       console.error('Hay un error');
-      /*
+      
       Object.values(this.form.controls).forEach(control => {
 
         if (control instanceof FormGroup) {
@@ -78,7 +80,7 @@ export class UserEditComponent implements OnInit {
         } else {
           control.markAllAsTouched();
         }
-      });*/
+      });
     } else {
       const user :IUser = {
         name: this.form.value['name'],
@@ -89,13 +91,32 @@ export class UserEditComponent implements OnInit {
       this._userService.updateUser(this.user.id, user).subscribe(res => {
         
         if (res === true) {
+          this.showAlertSuccess();
           this.router.navigate(['/useradmin']);
         } else {
           console.log({ res });
         }
-      });;
-      console.log(this.form.value);
+      });      
     }
+  }
+
+  controlValid(namecontrol: string) {
+    return this.form.get(namecontrol).invalid && this.form.get(namecontrol).touched;
+  }
+
+  return() {
+    this.router.navigate(['/useradmin']);
+  }
+
+  showAlertSuccess() {
+
+    Swal.fire({      
+      icon: 'success',
+      title: 'Registro actualizado',
+      showConfirmButton: false,
+      timer: 1500
+    });
+
   }
 
 }

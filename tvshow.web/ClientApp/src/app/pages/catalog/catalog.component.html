@@ -1,14 +1,16 @@
+<h5>Catálogo de shows</h5>
+<hr />
+
 <div class="row  mt-5">
 
 
   <form (ngSubmit)="onSearch( formulario )"
-        #formulario ="ngForm"
-        >
+        #formulario="ngForm">
 
     <div class="col">
 
       <div class="row">
-        <input type="text" class="form-control" placeholder="Palabra clave" name="keywords" [(ngModel)]="infosearch.keywords" #keywords="ngModel"  >
+        <input type="text" class="form-control" placeholder="Palabra clave" name="keywords" [(ngModel)]="infosearch.keywords" #keywords="ngModel">
       </div>
 
       <div class="row mt-3">
@@ -44,7 +46,7 @@
           <option selected></option>
           <option value="Action">Amazon Prime</option>
           <option value="Family">Apple Music</option>
-          <option value="Netflix">Netflix</option>          
+          <option value="Netflix">Netflix</option>
         </select>
 
       </div>
@@ -72,21 +74,21 @@
   </form>
 
 
-    <div class="col">
+  <div class="col">
 
-      <div class="card-columns">
-        <div class="card" *ngFor="let catalog of catalogs">
-          <img [src]="catalog.show.image | noimage " class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ catalog.show.name }}</h5>
-            <p class="card-text">{{ catalog.show.summary }}</p>
+    <div class="card-columns">
+      <div class="card" *ngFor="let catalog of catalogs">
+        <img [src]="catalog.show.image | noimage " class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ catalog.show.name }}</h5>
+          <p class="card-text">{{ catalog.show.summary }}</p>
 
-            <p class="card-text"><small class="text-muted">Rating <span class="badge badge-pill badge-success">{{ catalog.show.rating.average===null? 0: catalog.show.rating.average }}</span> </small></p>
-            <button type="button" class="btn btn-outline-primary" (click)="viewShow( catalog.show.id )">Ver mas</button>
-          </div>
+          <p class="card-text"><small class="text-muted">Rating <span class="badge badge-pill badge-success">{{ catalog.show.rating.average===null? 0: catalog.show.rating.average }}</span> </small></p>
+          <button type="button" class="btn btn-outline-primary" (click)="viewShow( catalog.show.id )">Ver mas</button>
         </div>
       </div>
-
     </div>
 
   </div>
+
+</div>

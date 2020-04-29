@@ -16,7 +16,7 @@ var pagesRoutes = [
             { path: 'useredit/:id', component: user_edit_component_1.UserEditComponent, data: { titulo: 'Editar usuario' } },
             { path: 'catalog', component: catalog_component_1.CatalogComponent, data: { titulo: 'Catálogo' } },
             { path: 'catalog/:id', component: catalog_card_component_1.CatalogCardComponent, data: { titulo: 'Catálogo' } },
-            { path: '', redirectTo: '/useradmin', pathMatch: 'full' }
+            { path: '', redirectTo: '/catalog', pathMatch: 'full' }
         ]
     }
 ];

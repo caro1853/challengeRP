@@ -24,7 +24,7 @@ namespace tvshow.web.Infrastructure
             {
                 userCurrent.Name = string.IsNullOrEmpty(user.Name) ? userCurrent.Name : user.Name;
                 userCurrent.Lastname = string.IsNullOrEmpty(user.Lastname) ? userCurrent.Lastname : user.Lastname;
-                userCurrent.Password = string.IsNullOrEmpty(user.Password) ? userCurrent.Lastname : user.Password;
+                userCurrent.Password = string.IsNullOrEmpty(user.Password) ? userCurrent.Password : user.Password;
 
                 this._myDBContext.Users.Update(userCurrent);
                 this._myDBContext.SaveChanges();

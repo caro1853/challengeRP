@@ -24,6 +24,7 @@ export class UserCreateComponent {
       name: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      rol:  ['U'],
       pass1: ['', Validators.required],
       pass2: ['', Validators.required]
     }, {
@@ -50,6 +51,7 @@ export class UserCreateComponent {
         name: this.form.value['name'],
         lastname: this.form.value['lastname'],
         email: this.form.value['email'],
+        rol: this.form.value['rol'],
         password: this.form.value['pass1']
       }
 

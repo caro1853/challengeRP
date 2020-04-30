@@ -24,12 +24,9 @@ import { LoginComponent } from './login/login.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'login', component: LoginComponent }//,
-      //{ path: '', redirectTo: '/login', pathMatch: 'full' }
+    RouterModule.forRoot([           
+      { path: 'login', component: LoginComponent },
+      { path: '**', redirectTo: '/login', pathMatch: 'full' }
     ]),
     PageModule,
     ReactiveFormsModule

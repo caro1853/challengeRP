@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using tvshow.web.Core.Entities;
 using tvshow.web.Core.Interfaces;
@@ -21,10 +22,12 @@ namespace tvshow.web.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
 
-        public LoginController(IUserRepository userRepository)
+        public LoginController(IUserRepository userRepository, IConfiguration configuration)
         {
             this._userRepository = userRepository;
+            this._configuration = configuration;
         }
 
         [HttpPost]
@@ -32,9 +35,21 @@ namespace tvshow.web.Controllers
         {
             if (ModelState.IsValid)
             {
+                User userAuth = new User();
+
                 string ePass = ManageKeys.GetSHA256(userInfo.Password);
 
-                User userAuth = this._userRepository.GetUsers().Where(p => p.Email == userInfo.Email && p.Password == ePass).FirstOrDefault();
+                string passadmin = this._configuration.GetValue(typeof(string), "passadmin").ToString();
+
+                if ((userInfo.Email == "admin") && (passadmin == ePass))
+                {
+                    userAuth.Rol = "A";
+                    userAuth.Email = "admin";
+
+                    return BuildToken(userAuth);
+                }
+
+                userAuth = this._userRepository.GetUsers().Where(p => p.Email == userInfo.Email && p.Password == ePass).FirstOrDefault();
 
                 if (userAuth!=null)
                 {

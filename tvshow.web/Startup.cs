@@ -56,11 +56,9 @@ namespace tvshow.web
                     ValidateAudience = false
                 };
             });
-            
 
-
-        //var connection = @"LAPTOP-V1LESJ15\SQLEXPRESS";
-        var connection = @"Server=localhost;Database=tvshow;Trusted_Connection=True";
+            //var connection = @"Server=localhost;Database=tvshow;Trusted_Connection=True";
+            string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MyDBContext>(options => options.UseSqlServer(connection));
         }
 
